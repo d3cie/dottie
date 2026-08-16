@@ -11,10 +11,9 @@ web/apps/client/dist/
 internal/web/dist/*
 !internal/web/dist/.gitkeep
 dist/
-dottie
+/dottie
 *.db
 *.db.wal
 *.duckdb
 *.duckdb.wal
 coverage.out
-
