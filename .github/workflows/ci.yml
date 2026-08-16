@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  workflow_call:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+      - uses: pnpm/action-setup@v5
+        with:
+          version: 10.26.0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: web/pnpm-lock.yaml
+      - name: Install frontend dependencies
+        run: pnpm --dir web install --frozen-lockfile
+      - name: Install sqlc
+        run: go install github.com/sqlc-dev/sqlc/cmd/sqlc@v1.29.0
+      - name: Generate API and database clients
+        run: make generate
+      - name: Verify generated code
+        run: git diff --exit-code
+      - name: Test Go packages
+        run: go test -race ./...
+      - name: Vet Go packages
+        run: go vet ./...
+      - name: Check frontend
+        run: pnpm --dir web check
+      - name: Check formatting
+        run: pnpm --dir web lint
+      - name: Build embedded assets and executable
+        run: make build

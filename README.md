@@ -2,9 +2,15 @@
 
 Dottie is a self-hosted, privacy-conscious web analytics server distributed as a single executable. It serves its dashboard, API, and browser tracker from the same process and stores all data on your machine.
 
-> Dottie is under active development. The first usable release is being assembled now.
+> Dottie is usable but pre-release software. Back up your data before upgrading.
 
-## Planned quick start
+## Quick start
+
+Install the latest release on Linux or macOS:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/d3cie/dottie/main/scripts/install.sh | sh
+```
 
 ```sh
 dottie start
@@ -17,6 +23,8 @@ Open `http://127.0.0.1:8080`, create the local administrator, add a website, the
 ```
 
 Because the script URL is hosted by Dottie, it automatically submits events to the same Dottie origin even when installed on another website.
+
+For a public installation, set `DOTTIE_BASE_URL=https://analytics.example.com` and place Dottie behind an HTTPS reverse proxy. See [docs/deployment.md](docs/deployment.md) for Docker Compose and systemd examples, and [docs/configuration.md](docs/configuration.md) for all settings.
 
 ## CLI
 
@@ -41,7 +49,7 @@ make dev
 make test
 ```
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for the repository workflow and [docs/architecture.md](docs/architecture.md) for the design.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the repository workflow, [docs/architecture.md](docs/architecture.md) for the design, and [docs/releases.md](docs/releases.md) for the release process.
 
 ## License
 

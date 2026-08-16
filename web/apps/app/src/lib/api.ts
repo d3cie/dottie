@@ -9,12 +9,12 @@ import {
   login as generatedLogin,
   logout as generatedLogout,
   setupAdmin,
-} from '@dottie/api-client';
+} from "@dottie/api-client";
 import type {
   GetBreakdownsDimension,
   GetBreakdownsPeriod,
   GetDashboardPeriod,
-} from '@dottie/api-client/models';
+} from "@dottie/api-client/models";
 
 export type User = { id: string; email: string };
 export type Website = {
@@ -54,10 +54,11 @@ export type Visitor = {
   views: number;
 };
 
-const options: RequestInit = { credentials: 'include' };
+const options: RequestInit = { credentials: "include" };
 
 export const api = {
-  bootstrap: () => getBootstrapStatus(options) as Promise<{ setup_required: boolean }>,
+  bootstrap: () =>
+    getBootstrapStatus(options) as Promise<{ setup_required: boolean }>,
   setup: (email: string, password: string) =>
     setupAdmin({ email, password }, options) as Promise<User>,
   login: (email: string, password: string) =>
@@ -66,9 +67,16 @@ export const api = {
   me: () => getCurrentUser(options) as Promise<User>,
   websites: () => listWebsites(options) as Promise<{ websites: Website[] }>,
   createWebsite: (name: string, domain: string, timezone: string) =>
-    generatedCreateWebsite({ name, domain, timezone }, options) as Promise<Website>,
+    generatedCreateWebsite(
+      { name, domain, timezone },
+      options,
+    ) as Promise<Website>,
   dashboard: (websiteId: string, period: string) =>
-    getDashboard(websiteId, { period: period as GetDashboardPeriod }, options) as Promise<Dashboard>,
+    getDashboard(
+      websiteId,
+      { period: period as GetDashboardPeriod },
+      options,
+    ) as Promise<Dashboard>,
   breakdown: (websiteId: string, period: string, dimension: string) =>
     getBreakdowns(
       websiteId,
@@ -90,5 +98,5 @@ export const api = {
 
 export const errorMessage = (error: unknown) => {
   if (error instanceof Error) return error.message;
-  return 'An unexpected error occurred.';
+  return "An unexpected error occurred.";
 };

@@ -2,7 +2,7 @@ type TrackPayload = {
   website_id: string;
   visitor_id: string;
   session_id: string;
-  name: 'pageview' | 'event';
+  name: "pageview" | "event";
   event?: string;
   path: string;
   hostname: string;
@@ -24,15 +24,15 @@ declare global {
 const script = document.currentScript as HTMLScriptElement | null;
 const websiteId = script?.dataset.websiteId;
 
-if (script && websiteId && navigator.doNotTrack !== '1') {
-  const collector = new URL('/api/v1/collect', script.src).toString();
-  const visitorId = persistentID('dottie_visitor_id', localStorage);
-  const sessionId = persistentID('dottie_session_id', sessionStorage);
-  let lastPath = '';
+if (script && websiteId && navigator.doNotTrack !== "1") {
+  const collector = new URL("/api/v1/collect", script.src).toString();
+  const visitorId = persistentID("dottie_visitor_id", localStorage);
+  const sessionId = persistentID("dottie_session_id", sessionStorage);
+  let lastPath = "";
 
-  const send = (name: 'pageview' | 'event', event?: string) => {
-    if (name === 'pageview' && lastPath === location.href) return;
-    if (name === 'pageview') lastPath = location.href;
+  const send = (name: "pageview" | "event", event?: string) => {
+    if (name === "pageview" && lastPath === location.href) return;
+    if (name === "pageview") lastPath = location.href;
     const payload: TrackPayload = {
       website_id: websiteId,
       visitor_id: visitorId,
@@ -46,16 +46,16 @@ if (script && websiteId && navigator.doNotTrack !== '1') {
       timestamp: new Date().toISOString(),
     };
     void fetch(collector, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
       keepalive: true,
-      credentials: 'omit',
+      credentials: "omit",
     });
   };
 
-  const navigation = () => queueMicrotask(() => send('pageview'));
-  for (const method of ['pushState', 'replaceState'] as const) {
+  const navigation = () => queueMicrotask(() => send("pageview"));
+  for (const method of ["pushState", "replaceState"] as const) {
     const original = history[method];
     history[method] = function (...args) {
       const result = original.apply(this, args);
@@ -63,10 +63,10 @@ if (script && websiteId && navigator.doNotTrack !== '1') {
       return result;
     };
   }
-  addEventListener('popstate', navigation);
-  window.dottie = { track: (event: string) => send('event', event) };
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', navigation, { once: true });
+  addEventListener("popstate", navigation);
+  window.dottie = { track: (event: string) => send("event", event) };
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", navigation, { once: true });
   } else {
     navigation();
   }

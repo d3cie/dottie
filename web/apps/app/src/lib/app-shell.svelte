@@ -130,6 +130,12 @@
   };
 
   const chooseWebsite = async (id: string) => {
+    if (id === '__add__') {
+      websiteName = '';
+      websiteDomain = '';
+      phase = 'create-website';
+      return;
+    }
     selectedWebsite = websites.find((website) => website.id === id) ?? selectedWebsite;
     visitorPage = 1;
     updatePath(true);
@@ -270,7 +276,7 @@
   <main class="flex min-h-svh items-center justify-center p-5">
     <form class="card w-full max-w-md p-6" onsubmit={(event) => { event.preventDefault(); void createWebsite(); }}>
       <div class="mb-5 flex items-center gap-3"><Logo class="size-9" /><span class="text-lg font-bold">dottie</span></div>
-      <h1 class="font-serif text-2xl font-semibold">add your first website.</h1>
+      <h1 class="font-serif text-2xl font-semibold">add a website.</h1>
       <p class="mt-1 text-sm text-muted-foreground">Dottie uses the domain to accept analytics only from your website.</p>
       <div class="mt-6"><label class="label" for="website-name">Website name</label><input class="input" id="website-name" bind:value={websiteName} placeholder="Acme" required /></div>
       <div class="mt-4"><label class="label" for="website-domain">Domain</label><input class="input" id="website-domain" bind:value={websiteDomain} placeholder="example.com" required /></div>
@@ -284,6 +290,7 @@
       <div class="flex items-center gap-2 text-lg font-bold"><Logo class="size-9" /><span>dottie</span></div>
       <select class="input border-none bg-card font-semibold" value={selectedWebsite.id} onchange={(event) => void chooseWebsite(event.currentTarget.value)} aria-label="Website">
         {#each websites as website}<option value={website.id}>{website.name}</option>{/each}
+        <option value="__add__">+ add website</option>
       </select>
       <nav class="space-y-1">
         <button class={cn('flex h-9 w-full items-center gap-3 rounded-md px-3 text-sm font-semibold text-muted-foreground hover:bg-card hover:text-foreground', section === 'dashboard' && 'bg-card text-foreground shadow-sm')} onclick={() => void navigate('dashboard')}><CircleGauge class="size-4" /> dashboard</button>
@@ -300,7 +307,7 @@
     <div class="min-w-0 flex-1">
       <header class="sticky top-0 z-40 flex h-14 items-center gap-3 border-b bg-background/90 px-4 backdrop-blur md:hidden">
         <Logo class="size-8" /><span class="font-bold">dottie</span><span class="text-muted-foreground">/</span>
-        <select class="min-w-0 flex-1 bg-transparent text-sm font-semibold" value={selectedWebsite.id} onchange={(event) => void chooseWebsite(event.currentTarget.value)}>{#each websites as website}<option value={website.id}>{website.name}</option>{/each}</select>
+        <select class="min-w-0 flex-1 bg-transparent text-sm font-semibold" value={selectedWebsite.id} onchange={(event) => void chooseWebsite(event.currentTarget.value)}>{#each websites as website}<option value={website.id}>{website.name}</option>{/each}<option value="__add__">+ add website</option></select>
         <Button variant="ghost" size="icon" onclick={() => void navigate(section === 'dashboard' ? 'visitors' : 'dashboard')}>{#if section === 'dashboard'}<Users />{:else}<CircleGauge />{/if}</Button>
       </header>
 
@@ -316,10 +323,9 @@
 
         {#if section === 'dashboard'}
           {#if dashboard && !dashboard.has_received_event}
-            <section class="card mb-3 flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
-              <div><h2 class="font-semibold">install dottie on your website.</h2><p class="text-sm text-muted-foreground">Paste this before the closing <code>&lt;/head&gt;</code> tag.</p></div>
-              <Button variant="outline" onclick={() => void copySnippet()}>{#if copied}<Check class="size-4" /> copied{:else}<Clipboard class="size-4" /> copy script{/if}</Button>
-              <code class="sr-only">{installSnippet}</code>
+            <section class="card mb-3 p-4">
+              <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"><div><h2 class="font-semibold">install dottie on your website.</h2><p class="text-sm text-muted-foreground">Paste this before the closing <code>&lt;/head&gt;</code> tag.</p></div><Button variant="outline" onclick={() => void copySnippet()}>{#if copied}<Check class="size-4" /> copied{:else}<Clipboard class="size-4" /> copy script{/if}</Button></div>
+              <code class="mt-3 block overflow-x-auto rounded-md bg-foreground p-3 text-xs text-background">{installSnippet}</code>
             </section>
           {/if}
           <div class="grid grid-cols-2 gap-4 rounded-md px-2 py-3 md:grid-cols-4">

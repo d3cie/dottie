@@ -1,0 +1,15 @@
+services:
+  dottie:
+    build: .
+    image: ghcr.io/d3cie/dottie:latest
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      DOTTIE_BASE_URL: https://analytics.example.com
+    volumes:
+      - dottie-data:/data
+
+volumes:
+  dottie-data:
+

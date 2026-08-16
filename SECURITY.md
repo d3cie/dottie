@@ -1,6 +1,11 @@
 # Security policy
 
-Security reports are accepted privately through GitHub Security Advisories for this repository. Please include affected versions, reproduction steps, and the expected impact. Do not include credentials or data from a real Dottie installation.
+## Supported versions
 
-Only the latest released minor version receives security fixes while the project is pre-1.0.
+Until Dottie reaches 1.0, security fixes are provided on the latest release line only.
 
+## Reporting a vulnerability
+
+Please use GitHub's private security advisory reporting for this repository. Do not open a public issue containing exploit details, credentials, personal analytics data, or session tokens. Include the affected version, deployment context, reproduction steps, and expected impact when possible.
+
+Maintainers will acknowledge a report as soon as practical, coordinate remediation and disclosure with the reporter, and publish a patched release and advisory for confirmed vulnerabilities.

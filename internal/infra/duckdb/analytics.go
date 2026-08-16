@@ -62,14 +62,18 @@ func (c *Client) Breakdowns(ctx context.Context, websiteID, period, dimension, s
 		return nil, 0, errors.New("unsupported breakdown dimension")
 	}
 	start, _ := periodBounds(period, now.UTC())
+	eventFilter := "AND event_name = 'pageview'"
+	if dimension == "events" {
+		eventFilter = ""
+	}
 	query := fmt.Sprintf(`
 		WITH grouped AS (
 			SELECT COALESCE(NULLIF(%s, ''), 'unknown') AS key, COUNT(*)::BIGINT AS count
-			FROM events WHERE website_id = ? AND occurred_at >= ? AND occurred_at < ? AND event_name = 'pageview'
+			FROM events WHERE website_id = ? AND occurred_at >= ? AND occurred_at < ? %s
 			AND LOWER(COALESCE(%s, '')) LIKE LOWER(?) GROUP BY key
 		), totals AS (SELECT COALESCE(SUM(count), 0)::BIGINT AS total FROM grouped)
 		SELECT key, count, CASE WHEN total = 0 THEN 0 ELSE count * 100.0 / total END AS percent, total
-		FROM grouped, totals ORDER BY count DESC, key ASC LIMIT ? OFFSET ?`, column, column)
+		FROM grouped, totals ORDER BY count DESC, key ASC LIMIT ? OFFSET ?`, column, eventFilter, column)
 	rows, err := c.SQL.QueryContext(ctx, query, websiteID, start, now, "%"+search+"%", limit, offset)
 	if err != nil {
 		return nil, 0, fmt.Errorf("query %s breakdown: %w", dimension, err)

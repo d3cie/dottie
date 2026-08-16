@@ -1,0 +1,113 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    uses: ./.github/workflows/ci.yml
+
+  build:
+    needs: test
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            os: linux
+            arch: x86_64
+            binary: dottie
+          - runner: ubuntu-24.04-arm
+            os: linux
+            arch: arm64
+            binary: dottie
+          - runner: macos-15-intel
+            os: darwin
+            arch: x86_64
+            binary: dottie
+          - runner: macos-15
+            os: darwin
+            arch: arm64
+            binary: dottie
+          - runner: windows-2025
+            os: windows
+            arch: x86_64
+            binary: dottie.exe
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+      - uses: pnpm/action-setup@v5
+        with:
+          version: 10.26.0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: web/pnpm-lock.yaml
+      - run: pnpm --dir web install --frozen-lockfile
+      - name: Build frontend
+        shell: bash
+        run: |
+          pnpm --dir web build
+          bash scripts/embed-web.sh
+      - name: Build executable
+        shell: bash
+        env:
+          RELEASE_OS: ${{ matrix.os }}
+          RELEASE_ARCH: ${{ matrix.arch }}
+          RELEASE_BINARY: ${{ matrix.binary }}
+        run: |
+          mkdir -p release release-packages
+          go build -trimpath \
+            -ldflags "-s -w -X main.version=${GITHUB_REF_NAME} -X main.commit=${GITHUB_SHA} -X main.date=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            -o "release/${RELEASE_BINARY}" ./cmd/dottie
+      - name: Package Unix executable
+        if: runner.os != 'Windows'
+        shell: bash
+        env:
+          RELEASE_OS: ${{ matrix.os }}
+          RELEASE_ARCH: ${{ matrix.arch }}
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          tar -czf "release-packages/dottie_${version}_${RELEASE_OS}_${RELEASE_ARCH}.tar.gz" -C release dottie
+      - name: Package Windows executable
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $version = $env:GITHUB_REF_NAME.TrimStart('v')
+          Compress-Archive -Path release/dottie.exe -DestinationPath "release-packages/dottie_${version}_windows_x86_64.zip"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: dottie-${{ matrix.os }}-${{ matrix.arch }}
+          path: release-packages/*
+          archive: false
+          if-no-files-found: error
+
+  publish:
+    needs: build
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v7
+        with:
+          pattern: dottie-*
+          path: artifacts
+          merge-multiple: true
+      - name: Generate checksums
+        run: |
+          cd artifacts
+          sha256sum dottie_* > checksums.txt
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" artifacts/* --repo "$GITHUB_REPOSITORY" --verify-tag --generate-notes --title "Dottie $GITHUB_REF_NAME"

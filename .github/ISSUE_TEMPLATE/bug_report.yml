@@ -1,0 +1,32 @@
+name: Bug report
+description: Report a reproducible problem in Dottie.
+title: ""
+labels: [bug]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Dottie version
+      placeholder: v0.1.0
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options: [Linux, macOS, Windows, Docker, Other]
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Include expected behavior and reproduction steps. Remove secrets and personal analytics data.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      render: text
+

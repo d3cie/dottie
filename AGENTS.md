@@ -50,7 +50,7 @@ Dottie is an open-source, self-hosted web analytics product. It ships as one Go 
 - Frontend changes: `pnpm --dir web check`, `pnpm --dir web lint`, and `pnpm --dir web build`.
 - API changes: regenerate sqlc/Orval output and verify the worktree diff.
 - UI changes: run Playwright smoke tests when the browser dependencies are available.
-- Release changes: run `goreleaser check` when GoReleaser is available.
+- Release changes: validate GitHub Actions with `actionlint` and test a production build.
 - If a check cannot run, report exactly what was not verified and why.
 
 ## Database changes
@@ -74,4 +74,3 @@ Dottie is an open-source, self-hosted web analytics product. It ships as one Go 
 - Commit every coherent completed change. Do not leave finished work uncommitted.
 - Use short imperative sentence-case subjects without Conventional Commit prefixes.
 - Do not commit secrets, local databases, build caches, or unrelated changes.
-

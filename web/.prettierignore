@@ -1,7 +1,7 @@
 apps/app/build
 apps/app/.svelte-kit
 apps/client/dist
+.turbo
 packages/api-client/src/generated
 openapi.yaml
 pnpm-lock.yaml
-

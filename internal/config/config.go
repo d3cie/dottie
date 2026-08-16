@@ -84,7 +84,13 @@ func (c Config) PublicURL() string {
 	if c.BaseURL != "" {
 		return strings.TrimRight(c.BaseURL, "/")
 	}
-	return "http://" + c.Address
+	address := c.Address
+	if strings.HasPrefix(address, "0.0.0.0:") {
+		address = "127.0.0.1:" + strings.TrimPrefix(address, "0.0.0.0:")
+	} else if strings.HasPrefix(address, "[::]:") {
+		address = "127.0.0.1:" + strings.TrimPrefix(address, "[::]:")
+	}
+	return "http://" + address
 }
 
 func applyEnvironment(cfg *Config) {

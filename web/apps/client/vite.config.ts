@@ -1,14 +1,13 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from "vite";
 
 export default defineConfig({
   build: {
     lib: {
-      entry: 'src/index.ts',
-      name: 'Dottie',
-      formats: ['iife'],
-      fileName: () => 'tracker.js',
+      entry: "src/index.ts",
+      name: "Dottie",
+      formats: ["iife"],
+      fileName: () => "tracker.js",
     },
-    minify: 'esbuild',
+    minify: "esbuild",
   },
 });
-
