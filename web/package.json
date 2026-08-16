@@ -7,7 +7,7 @@
     "build": "svelte-kit sync && vite build",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "dev": "vite dev --host --port 5173",
-    "generate": "orval --config ./orval.config.ts",
+    "generate": "svelte-kit sync && orval --config ./orval.config.ts",
     "format": "prettier --write .",
     "lint": "prettier --check ."
   },
