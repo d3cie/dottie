@@ -1,0 +1,18 @@
+{
+  "name": "dottie-web",
+  "private": true,
+  "packageManager": "pnpm@10.26.0",
+  "scripts": {
+    "build": "turbo run build",
+    "check": "turbo run check",
+    "dev": "turbo run dev",
+    "format": "prettier --write .",
+    "lint": "prettier --check ."
+  },
+  "devDependencies": {
+    "prettier": "^3.7.4",
+    "prettier-plugin-svelte": "^3.4.0",
+    "turbo": "^2.7.2"
+  }
+}
+

@@ -1,0 +1,19 @@
+{
+  "name": "@dottie/api-client",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./models": "./src/generated/models/index.ts"
+  },
+  "scripts": {
+    "build": "tsc --noEmit",
+    "check": "tsc --noEmit",
+    "generate": "orval --config ../../orval.config.ts"
+  },
+  "devDependencies": {
+    "orval": "^8.4.1",
+    "typescript": "^5.9.3"
+  }
+}
+

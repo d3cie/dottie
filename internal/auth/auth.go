@@ -6,6 +6,8 @@ import (
 	"encoding/base64"
 	"encoding/hex"
 	"fmt"
+	"strconv"
+	"strings"
 
 	"golang.org/x/crypto/argon2"
 )
@@ -30,23 +32,43 @@ func HashPassword(password string) (string, error) {
 }
 
 func VerifyPassword(encoded, password string) bool {
-	var memory uint32
-	var time uint32
-	var threads uint8
-	var saltText string
-	var keyText string
-	if _, err := fmt.Sscanf(encoded, "argon2id$v=19$m=%d,t=%d,p=%d$%s$%s", &memory, &time, &threads, &saltText, &keyText); err != nil {
+	parts := strings.Split(encoded, "$")
+	if len(parts) != 5 || parts[0] != "argon2id" || parts[1] != "v=19" {
 		return false
 	}
-	salt, err := base64.RawStdEncoding.DecodeString(saltText)
+	var memory uint64
+	var iterations uint64
+	var threads uint64
+	for _, parameter := range strings.Split(parts[2], ",") {
+		key, value, found := strings.Cut(parameter, "=")
+		if !found {
+			return false
+		}
+		parsed, err := strconv.ParseUint(value, 10, 32)
+		if err != nil {
+			return false
+		}
+		switch key {
+		case "m":
+			memory = parsed
+		case "t":
+			iterations = parsed
+		case "p":
+			threads = parsed
+		}
+	}
+	if memory == 0 || iterations == 0 || threads == 0 || threads > 255 {
+		return false
+	}
+	salt, err := base64.RawStdEncoding.DecodeString(parts[3])
 	if err != nil {
 		return false
 	}
-	want, err := base64.RawStdEncoding.DecodeString(keyText)
+	want, err := base64.RawStdEncoding.DecodeString(parts[4])
 	if err != nil {
 		return false
 	}
-	got := argon2.IDKey([]byte(password), salt, time, memory, threads, uint32(len(want)))
+	got := argon2.IDKey([]byte(password), salt, uint32(iterations), uint32(memory), uint8(threads), uint32(len(want)))
 	return subtleEqual(got, want)
 }
 
