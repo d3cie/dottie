@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { TrendingDown, TrendingUp } from 'lucide-svelte';
+  import { TrendingDown, TrendingUp } from '@lucide/svelte';
+  import { Skeleton } from '$lib/ui/skeleton';
   import { cn } from '$lib/ui/cn';
 
   let {
@@ -39,20 +40,24 @@
       <Icon class="size-4 sm:hidden" />{title}
     </p>
     <span class="flex items-start gap-1.5">
-      <span class="text-lg font-bold leading-6 tabular-nums sm:text-xl"
-        >{format(value)}</span
-      >
-      <span
-        class={cn(
-          'flex h-[1.4rem] items-center gap-0.5 text-xs font-semibold',
-          isNegative ? 'text-red-600' : 'text-green-600',
-        )}
-      >
-        {#if isNegative}<TrendingDown class="size-3" />{:else}<TrendingUp
-            class="size-3"
-          />{/if}
-        {Math.abs(change).toFixed(1)}%
-      </span>
+      {#if loading}
+        <Skeleton class="mt-0.5 h-5 w-16" />
+      {:else}
+        <span class="text-lg font-bold leading-6 tabular-nums sm:text-xl"
+          >{format(value)}</span
+        >
+        <span
+          class={cn(
+            'flex h-[1.4rem] items-center gap-0.5 text-xs font-semibold',
+            isNegative ? 'text-red-600' : 'text-green-600',
+          )}
+        >
+          {#if isNegative}<TrendingDown class="size-3" />{:else}<TrendingUp
+              class="size-3"
+            />{/if}
+          {Math.abs(change).toFixed(1)}%
+        </span>
+      {/if}
     </span>
   </div>
 </div>

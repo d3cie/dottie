@@ -1,7 +1,11 @@
 <script lang="ts">
-  import Button from '$lib/ui/button.svelte';
+  import { Button } from '$lib/ui/button';
+  import { Input } from '$lib/ui/input';
+  import { Label } from '$lib/ui/label';
+  import * as Select from '$lib/ui/select';
+  import { cn } from '$lib/ui/cn';
   import Logo from '$lib/ui/logo.svelte';
-  import { CircleGauge, LoaderCircle, Users } from 'lucide-svelte';
+  import { CircleGauge, LoaderCircle, Users } from '@lucide/svelte';
   import { onMount } from 'svelte';
   import DashboardPage from './dashboard-page.svelte';
   import Sidebar from './sidebar.svelte';
@@ -259,8 +263,8 @@
           : 'Sign in to your local analytics dashboard.'}
       </p>
       <div class="mt-6">
-        <label class="label" for="email">Email</label><input
-          class="input"
+        <Label class="mb-1.5 font-semibold" for="email">Email</Label><Input
+          class="h-10 bg-elevated"
           id="email"
           type="email"
           bind:value={email}
@@ -269,12 +273,13 @@
         />
       </div>
       <div class="mt-4">
-        <label class="label" for="password">Password</label><input
-          class="input"
+        <Label class="mb-1.5 font-semibold" for="password">Password</Label
+        ><Input
+          class="h-10 bg-elevated"
           id="password"
           type="password"
           bind:value={password}
-          minlength="12"
+          minlength={12}
           autocomplete={phase === 'setup' ? 'new-password' : 'current-password'}
           required
         />{#if phase === 'setup'}<p
@@ -311,8 +316,10 @@
         Dottie uses the domain to accept analytics only from your website.
       </p>
       <div class="mt-6">
-        <label class="label" for="website-name">Website name</label><input
-          class="input"
+        <Label class="mb-1.5 font-semibold" for="website-name"
+          >Website name</Label
+        ><Input
+          class="h-10 bg-elevated"
           id="website-name"
           bind:value={websiteName}
           placeholder="Acme"
@@ -320,8 +327,9 @@
         />
       </div>
       <div class="mt-4">
-        <label class="label" for="website-domain">Domain</label><input
-          class="input"
+        <Label class="mb-1.5 font-semibold" for="website-domain">Domain</Label
+        ><Input
+          class="h-10 bg-elevated"
           id="website-domain"
           bind:value={websiteDomain}
           placeholder="example.com"
@@ -358,16 +366,25 @@
         <Logo class="size-8" /><span class="font-bold">dottie</span><span
           class="text-muted-foreground">/</span
         >
-        <select
-          class="min-w-0 flex-1 bg-transparent text-sm font-semibold outline-none"
+        <Select.Root
+          type="single"
           value={selectedWebsite.id}
-          onchange={(event) => void chooseWebsite(event.currentTarget.value)}
+          onValueChange={(value) => value && void chooseWebsite(value)}
         >
-          {#each websites as website}<option value={website.id}
-              >{website.name}</option
-            >{/each}
-          <option value="__add__">+ add website</option>
-        </select>
+          <Select.Trigger
+            class="min-w-0 flex-1 border-0 bg-transparent px-2 text-sm font-semibold shadow-none"
+            >{selectedWebsite.name}</Select.Trigger
+          >
+          <Select.Content>
+            {#each websites as website}<Select.Item
+                value={website.id}
+                label={website.name}>{website.name}</Select.Item
+              >{/each}
+            <Select.Item value="__add__" label="add website"
+              >+ add website</Select.Item
+            >
+          </Select.Content>
+        </Select.Root>
       </header>
 
       {#if error}<p
@@ -402,17 +419,23 @@
       <nav
         class="bg-elevated fixed inset-x-3 bottom-3 z-50 flex h-12 items-center justify-around rounded-xl border p-1 shadow-lg md:hidden"
       >
-        <button
-          class="flex h-10 flex-1 items-center justify-center rounded-lg"
-          class:bg-accent={section === 'dashboard'}
+        <Button
+          variant="ghost"
+          class={cn(
+            'flex h-10 flex-1 items-center justify-center rounded-lg',
+            section === 'dashboard' && 'bg-accent',
+          )}
           onclick={() => void navigate('dashboard')}
-          aria-label="dashboard"><CircleGauge class="size-4" /></button
+          aria-label="dashboard"><CircleGauge class="size-4" /></Button
         >
-        <button
-          class="flex h-10 flex-1 items-center justify-center rounded-lg"
-          class:bg-accent={section === 'visitors'}
+        <Button
+          variant="ghost"
+          class={cn(
+            'flex h-10 flex-1 items-center justify-center rounded-lg',
+            section === 'visitors' && 'bg-accent',
+          )}
           onclick={() => void navigate('visitors')}
-          aria-label="visitors"><Users class="size-4" /></button
+          aria-label="visitors"><Users class="size-4" /></Button
         >
       </nav>
     </div>

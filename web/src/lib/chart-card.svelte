@@ -1,6 +1,8 @@
 <script lang="ts">
   import { BarChart } from 'layerchart';
-  import { TrendingDown, TrendingUp } from 'lucide-svelte';
+  import { TrendingDown, TrendingUp } from '@lucide/svelte';
+  import { Card } from '$lib/ui/card';
+  import { Skeleton } from '$lib/ui/skeleton';
   import type { Point } from './api';
 
   let {
@@ -26,8 +28,8 @@
   );
 </script>
 
-<section
-  class="bg-elevated relative col-span-2 flex min-h-72 w-full flex-col overflow-hidden rounded-md border p-3 shadow-sm"
+<Card
+  class="bg-elevated relative col-span-2 min-h-72 w-full gap-0 rounded-md p-3 shadow-sm"
 >
   <header
     class="flex items-start justify-between text-sm font-semibold transition-opacity"
@@ -70,7 +72,9 @@
     class:opacity-50={loading}
     style="--color-value: #3b82f6"
   >
-    {#if chartData.length}
+    {#if loading}
+      <Skeleton class="h-full min-h-40 w-full" />
+    {:else if chartData.length}
       <BarChart
         data={chartData}
         x="timestamp"
@@ -96,4 +100,4 @@
       </div>
     {/if}
   </div>
-</section>
+</Card>

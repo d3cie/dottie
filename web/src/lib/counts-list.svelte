@@ -1,6 +1,9 @@
 <script lang="ts">
-  import { Search } from 'lucide-svelte';
+  import { Search } from '@lucide/svelte';
   import type { Breakdown } from './api';
+  import { Button } from '$lib/ui/button';
+  import { Card } from '$lib/ui/card';
+  import { Input } from '$lib/ui/input';
   import { cn } from '$lib/ui/cn';
 
   let {
@@ -23,7 +26,7 @@
   );
 </script>
 
-<section
+<Card
   class={cn(
     'bg-elevated relative flex min-h-80 w-full flex-col overflow-hidden rounded-md border p-3 shadow-sm',
     className,
@@ -34,8 +37,10 @@
     class:opacity-50={loading}
   >
     <span>{title}</span>
-    <button
-      class="bg-background flex size-6 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-foreground"
+    <Button
+      variant="ghost"
+      size="icon-xs"
+      class="bg-background text-muted-foreground hover:text-foreground"
       aria-label={`search ${title}`}
       onclick={() => {
         searching = !searching;
@@ -43,11 +48,11 @@
       }}
     >
       <Search class="size-3.5" />
-    </button>
+    </Button>
   </header>
   {#if searching}
-    <input
-      class="input mt-1 h-8"
+    <Input
+      class="mt-1 h-8 bg-elevated"
       bind:value={query}
       placeholder={`search ${title}`}
     />
@@ -85,4 +90,4 @@
   >
     <span>{visible.length || '-'} results</span>
   </footer>
-</section>
+</Card>

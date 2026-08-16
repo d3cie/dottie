@@ -28,7 +28,7 @@ Dottie is an open-source, self-hosted web analytics product. It ships as one Go 
 - Use structured `log/slog` logging. Do not log secrets, passwords, session tokens, raw IP addresses, or request bodies.
 - Use `pnpm`; do not introduce npm or Yarn lockfiles.
 - Use Svelte 5 patterns and TypeScript inference. Prefer arrow functions for frontend handlers and helpers.
-- Use components from `web/src/lib/ui` before creating new primitives.
+- Use shadcn-svelte components from `web/src/lib/ui` before creating new primitives. Add registry components through `web/components.json`; keep product-specific Peasy styling in the checked-in component source.
 - Preserve Peasy's compact visual language: lowercase navigation and page titles, restrained cards, clear density, and deliberate spacing. User-facing explanations and errors use normal sentence case.
 - Keep chart components declarative and small. Data shaping belongs in API responses or focused helpers, not in chart lifecycle code.
 - Make filters bookmarkable through URL search parameters.

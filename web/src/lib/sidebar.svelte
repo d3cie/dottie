@@ -1,7 +1,10 @@
 <script lang="ts">
-  import { CircleGauge, Globe, LogOut, Settings, Users } from 'lucide-svelte';
+  import { CircleGauge, Globe, LogOut, Settings, Users } from '@lucide/svelte';
   import type { User, Website } from './api';
   import Logo from '$lib/ui/logo.svelte';
+  import { Button } from '$lib/ui/button';
+  import * as Avatar from '$lib/ui/avatar';
+  import * as Select from '$lib/ui/select';
   import { cn } from '$lib/ui/cn';
 
   let {
@@ -37,33 +40,40 @@
   </div>
 
   <div class="hidden w-full pb-0.5 lg:block">
-    <label class="sr-only" for="website-switcher">website</label>
     <div class="relative">
       <Globe
         class="text-muted-foreground pointer-events-none absolute left-2.5 top-2.5 size-4"
       />
-      <select
-        id="website-switcher"
-        class="h-9 w-56 appearance-none rounded-md border-0 bg-transparent pl-9 pr-8 text-sm font-semibold outline-none hover:bg-elevated"
+      <Select.Root
+        type="single"
         value={website.id}
-        onchange={(event) => onWebsiteChange(event.currentTarget.value)}
+        onValueChange={(value) => value && onWebsiteChange(value)}
       >
-        {#each websites as item}<option value={item.id}>{item.name}</option
-          >{/each}
-        <option value="__add__">+ add website</option>
-      </select>
+        <Select.Trigger
+          aria-label="website"
+          class="h-9 w-56 border-0 bg-transparent pl-9 text-sm font-semibold shadow-none hover:bg-elevated"
+          >{website.name}</Select.Trigger
+        >
+        <Select.Content>
+          {#each websites as item}<Select.Item value={item.id} label={item.name}
+              >{item.name}</Select.Item
+            >{/each}
+          <Select.Item value="__add__" label="add website"
+            >+ add website</Select.Item
+          >
+        </Select.Content>
+      </Select.Root>
     </div>
   </div>
 
   <nav class="flex w-full flex-col items-center gap-0.5">
     {#each navigation as item}
       {@const Icon = item.icon}
-      <button
+      <Button
+        variant="ghost"
         class={cn(
-          'text-muted-foreground group flex h-9 w-9 items-center rounded-md px-0 text-sm font-semibold transition-colors lg:w-56 lg:px-3',
-          section === item.id
-            ? 'bg-accent text-foreground'
-            : 'hover:bg-elevated hover:text-foreground',
+          'text-muted-foreground group h-9 w-9 justify-start rounded-md px-0 text-sm font-semibold lg:w-56 lg:px-3',
+          section === item.id && 'bg-accent text-foreground',
         )}
         onclick={() => onNavigate(item.id)}
       >
@@ -71,7 +81,7 @@
         <span class="ml-2.5 mt-0.5 hidden flex-1 text-left leading-none lg:flex"
           >{item.label}</span
         >
-      </button>
+      </Button>
     {/each}
   </nav>
 
@@ -86,29 +96,32 @@
   </div>
 
   <nav class="flex w-full flex-col items-center gap-0.5">
-    <button
+    <Button
+      variant="ghost"
       class="text-muted-foreground flex h-9 w-9 items-center rounded-md px-0 text-sm font-semibold opacity-50 lg:w-56 lg:px-3"
       disabled
     >
       <Settings class="mx-auto size-4 opacity-80 lg:mx-0" />
       <span class="ml-2.5 hidden lg:flex">settings</span>
-    </button>
-    <button
+    </Button>
+    <Button
+      variant="ghost"
       class="text-muted-foreground flex h-9 w-9 items-center rounded-md px-0 text-sm font-semibold hover:bg-elevated hover:text-foreground lg:w-56 lg:px-3"
       onclick={onLogout}
     >
       <LogOut class="mx-auto size-4 opacity-80 lg:mx-0" />
       <span class="ml-2.5 hidden lg:flex">sign out</span>
-    </button>
+    </Button>
   </nav>
 
   <div
     class="hidden w-56 items-center gap-2 px-3 text-xs text-muted-foreground lg:flex"
   >
-    <span
-      class="flex size-7 items-center justify-center rounded-full bg-secondary font-bold text-foreground"
-      >{user?.email.slice(0, 1).toUpperCase()}</span
-    >
+    <Avatar.Root size="sm">
+      <Avatar.Fallback class="bg-secondary font-bold text-foreground"
+        >{user?.email.slice(0, 1).toUpperCase()}</Avatar.Fallback
+      >
+    </Avatar.Root>
     <span class="min-w-0 truncate">{user?.email}</span>
   </div>
 </aside>

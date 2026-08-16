@@ -6,11 +6,16 @@
     Monitor,
     Search,
     Smartphone,
-  } from 'lucide-svelte';
+  } from '@lucide/svelte';
   import { onMount } from 'svelte';
   import type { Visitor } from './api';
   import PageContainer from './page-container.svelte';
-  import Button from '$lib/ui/button.svelte';
+  import { Button } from '$lib/ui/button';
+  import { Input } from '$lib/ui/input';
+  import * as Avatar from '$lib/ui/avatar';
+  import { Kbd } from '$lib/ui/kbd';
+  import * as Table from '$lib/ui/table';
+  import { cn } from '$lib/ui/cn';
 
   let {
     visitors,
@@ -73,8 +78,8 @@
         <Search
           class="pointer-events-none absolute left-3 top-2.5 size-4 text-muted-foreground"
         />
-        <input
-          class="input w-56 pl-9"
+        <Input
+          class="h-9 w-56 bg-elevated pl-9"
           bind:value={query}
           placeholder="search visitors"
         />
@@ -98,79 +103,83 @@
     <div
       class="bg-elevated relative flex min-h-40 w-full flex-1 flex-col overflow-auto rounded-lg border text-center shadow-sm"
     >
-      <table
-        class="w-full min-w-[900px] text-sm transition-opacity duration-300"
-        class:opacity-50={loading}
+      <Table.Root
+        class={cn(
+          'w-full min-w-[900px] text-sm transition-opacity duration-300',
+          loading && 'opacity-50',
+        )}
       >
-        <thead>
-          <tr class="border-b hover:bg-elevated">
-            <th class="h-10 w-14 px-4"></th>
-            <th
+        <Table.Header>
+          <Table.Row class="border-b hover:bg-elevated">
+            <Table.Head class="h-10 w-14 px-4"></Table.Head>
+            <Table.Head
               class="h-10 whitespace-nowrap px-4 text-left text-xs font-semibold uppercase text-muted-foreground"
-              >name</th
+              >name</Table.Head
             >
-            <th
+            <Table.Head
               class="h-10 whitespace-nowrap px-4 text-center text-xs font-semibold uppercase text-muted-foreground"
-              >country</th
+              >country</Table.Head
             >
-            <th
+            <Table.Head
               class="h-10 whitespace-nowrap px-4 text-left text-xs font-semibold uppercase text-muted-foreground"
-              >referrer</th
+              >referrer</Table.Head
             >
-            <th
+            <Table.Head
               class="h-10 whitespace-nowrap px-4 text-left text-xs font-semibold uppercase text-muted-foreground"
-              >first seen</th
+              >first seen</Table.Head
             >
-            <th
+            <Table.Head
               class="h-10 whitespace-nowrap px-4 text-left text-xs font-semibold uppercase text-muted-foreground"
-              >last activity</th
+              >last activity</Table.Head
             >
-            <th
+            <Table.Head
               class="h-10 whitespace-nowrap px-4 text-left text-xs font-semibold uppercase text-muted-foreground"
-              >device info</th
+              >device info</Table.Head
             >
-          </tr>
-        </thead>
-        <tbody>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
           {#each visitors as visitor (visitor.id)}
             {@const DeviceIcon = deviceIcon(visitor.device)}
-            <tr class="h-14 border-b last:border-0 hover:bg-muted/50">
-              <td class="px-4 pr-0">
-                <span
-                  class="relative flex size-8 items-center justify-center rounded-full bg-secondary text-xs font-bold"
-                >
-                  {visitor.name.slice(-2).toUpperCase()}
+            <Table.Row class="h-14 border-b last:border-0 hover:bg-muted/50">
+              <Table.Cell class="px-4 pr-0">
+                <Avatar.Root>
+                  <Avatar.Fallback
+                    class="bg-secondary text-xs font-bold text-foreground"
+                    >{visitor.name.slice(-2).toUpperCase()}</Avatar.Fallback
+                  >
                   {#if new Date(visitor.last_active_at).getTime() > Date.now() - 300000}<span
                       class="absolute bottom-0 right-0 size-2.5 rounded-full border-2 border-elevated bg-green-500"
                     ></span>{/if}
-                </span>
-              </td>
-              <td class="w-fit whitespace-nowrap px-4 text-left font-semibold"
+                </Avatar.Root>
+              </Table.Cell>
+              <Table.Cell
+                class="w-fit whitespace-nowrap px-4 text-left font-semibold"
                 ><span
                   class="text-primary underline decoration-primary/40 underline-offset-4"
                   >{visitor.name}</span
-                ></td
+                ></Table.Cell
               >
-              <td class="px-4 text-center font-medium"
+              <Table.Cell class="px-4 text-center font-medium"
                 >{visitor.country || 'unknown'}{#if visitor.city}<span
                     class="block text-xs text-muted-foreground"
                     >{visitor.city}</span
-                  >{/if}</td
+                  >{/if}</Table.Cell
               >
-              <td class="max-w-48 truncate px-4 text-left font-medium"
-                >{visitor.referrer || 'direct/unknown'}</td
+              <Table.Cell class="max-w-48 truncate px-4 text-left font-medium"
+                >{visitor.referrer || 'direct/unknown'}</Table.Cell
               >
-              <td class="whitespace-nowrap px-4 text-left font-medium"
+              <Table.Cell class="whitespace-nowrap px-4 text-left font-medium"
                 >{new Intl.DateTimeFormat('en-GB', {
                   day: '2-digit',
                   month: 'short',
                   year: '2-digit',
-                }).format(new Date(visitor.first_seen_at))}</td
+                }).format(new Date(visitor.first_seen_at))}</Table.Cell
               >
-              <td class="whitespace-nowrap px-4 text-left font-medium"
-                >{relativeTime(visitor.last_active_at)}</td
+              <Table.Cell class="whitespace-nowrap px-4 text-left font-medium"
+                >{relativeTime(visitor.last_active_at)}</Table.Cell
               >
-              <td class="whitespace-nowrap px-4 text-left font-medium">
+              <Table.Cell class="whitespace-nowrap px-4 text-left font-medium">
                 <span class="flex items-center text-muted-foreground"
                   ><DeviceIcon class="mr-1 size-4 opacity-80" /><Dot /><span
                     class="text-foreground">{visitor.os || 'other'}</span
@@ -178,17 +187,19 @@
                     >{visitor.browser || 'other'}</span
                   ></span
                 >
-              </td>
-            </tr>
+              </Table.Cell>
+            </Table.Row>
           {:else}
-            <tr
-              ><td colspan="7" class="h-64 text-sm"
-                >{loading ? 'loading visitors…' : 'no visitors found'}</td
-              ></tr
+            <Table.Row
+              ><Table.Cell colspan={7} class="h-64 text-center text-sm"
+                >{loading
+                  ? 'loading visitors…'
+                  : 'no visitors found'}</Table.Cell
+              ></Table.Row
             >
           {/each}
-        </tbody>
-      </table>
+        </Table.Body>
+      </Table.Root>
     </div>
 
     <div class="flex w-full justify-between px-2">
@@ -202,10 +213,7 @@
           class="gap-2"
           disabled={page === 1 || loading}
           onclick={() => onPageChange(page - 1)}
-          >Previous <span
-            class="bg-elevated hidden size-5 items-center justify-center rounded-sm border text-xs sm:flex"
-            >z</span
-          ></Button
+          >Previous <Kbd class="hidden bg-elevated sm:flex">z</Kbd></Button
         >
         <Button
           size="sm"
@@ -213,10 +221,7 @@
           class="gap-2"
           disabled={page >= pages || loading}
           onclick={() => onPageChange(page + 1)}
-          >Next <span
-            class="bg-elevated hidden size-5 items-center justify-center rounded-sm border text-xs sm:flex"
-            >x</span
-          ></Button
+          >Next <Kbd class="hidden bg-elevated sm:flex">x</Kbd></Button
         >
       </div>
     </div>

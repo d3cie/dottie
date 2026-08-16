@@ -5,7 +5,8 @@
     LogOut,
     Monitor,
     Waypoints,
-  } from 'lucide-svelte';
+  } from '@lucide/svelte';
+  import * as Select from '$lib/ui/select';
   import type { Breakdown, Dashboard } from './api';
   import PageContainer from './page-container.svelte';
   import InstallBanner from './install-banner.svelte';
@@ -44,16 +45,30 @@
         class="flex size-9 items-center justify-center rounded-l-md border border-r-0 border-dashed border-gray-200"
         ><CalendarDays class="size-4 stroke-[1.6px]" /></span
       >
-      <select
-        class="bg-elevated h-9 rounded-r-md border px-3 text-sm font-semibold outline-none"
+      <Select.Root
+        type="single"
         value={period}
-        onchange={(event) => onPeriodChange(event.currentTarget.value)}
-        aria-label="time range"
+        onValueChange={(value) => value && onPeriodChange(value)}
       >
-        <option value="7d">last 7 days</option>
-        <option value="30d">last 30 days</option>
-        <option value="90d">last 90 days</option>
-      </select>
+        <Select.Trigger
+          class="h-9 rounded-l-none rounded-r-md bg-elevated px-3 text-sm font-semibold"
+          aria-label="time range"
+          >{period === '7d'
+            ? 'last 7 days'
+            : period === '90d'
+              ? 'last 90 days'
+              : 'last 30 days'}</Select.Trigger
+        >
+        <Select.Content>
+          <Select.Item value="7d" label="last 7 days">last 7 days</Select.Item>
+          <Select.Item value="30d" label="last 30 days"
+            >last 30 days</Select.Item
+          >
+          <Select.Item value="90d" label="last 90 days"
+            >last 90 days</Select.Item
+          >
+        </Select.Content>
+      </Select.Root>
     </div>
   {/snippet}
 

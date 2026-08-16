@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { Check, Clipboard } from 'lucide-svelte';
-  import Button from '$lib/ui/button.svelte';
+  import { Check, Clipboard } from '@lucide/svelte';
+  import { Button } from '$lib/ui/button';
+  import { Card } from '$lib/ui/card';
 
   let {
     snippet,
@@ -9,8 +10,8 @@
   }: { snippet: string; copied: boolean; onCopy: () => void } = $props();
 </script>
 
-<section
-  class="from-elevated via-elevated mb-3 flex w-full flex-col gap-2 rounded-xl border bg-gradient-to-tl to-green-50 p-3 shadow-sm"
+<Card
+  class="from-elevated via-elevated mb-3 w-full gap-2 rounded-xl bg-gradient-to-tl to-green-50 p-3 shadow-sm"
 >
   <h2 class="mt-1 font-serif text-xl font-semibold">
     install dottie on your website
@@ -34,4 +35,4 @@
         /> copy script{/if}
     </Button>
   </div>
-</section>
+</Card>
