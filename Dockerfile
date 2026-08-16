@@ -1,19 +1,26 @@
 FROM node:24-bookworm-slim AS web
 WORKDIR /src
 RUN corepack enable
-COPY web/package.json web/pnpm-lock.yaml web/pnpm-workspace.yaml web/turbo.json web/orval.config.ts ./web/
-COPY web/apps ./web/apps
-COPY web/packages ./web/packages
+COPY web/package.json web/pnpm-lock.yaml web/orval.config.ts web/svelte.config.js web/tsconfig.json web/vite.config.ts ./web/
+COPY web/src ./web/src
 RUN pnpm --dir web install --frozen-lockfile
 RUN pnpm --dir web build
+
+FROM node:24-bookworm-slim AS tracker
+WORKDIR /src
+RUN corepack enable
+COPY tracker/package.json tracker/pnpm-lock.yaml tracker/tsconfig.json tracker/vite.config.ts ./tracker/
+COPY tracker/src ./tracker/src
+RUN pnpm --dir tracker install --frozen-lockfile
+RUN pnpm --dir tracker build
 
 FROM golang:1.25-bookworm AS go
 WORKDIR /src
 COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
-COPY --from=web /src/web/apps/app/build ./web/apps/app/build
-COPY --from=web /src/web/apps/client/dist ./web/apps/client/dist
+COPY --from=web /src/web/build ./web/build
+COPY --from=tracker /src/tracker/dist ./tracker/dist
 RUN bash scripts/embed-web.sh
 RUN go build -trimpath -ldflags "-s -w" -o /out/dottie ./cmd/dottie
 

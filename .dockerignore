@@ -3,13 +3,11 @@
 .env
 .env.*
 .DS_Store
-.turbo
 dist
 node_modules
-web/**/node_modules
-web/apps/app/.svelte-kit
-web/apps/app/build
-web/apps/client/dist
+web/.svelte-kit
+web/build
+tracker/dist
 internal/web/dist
 *.db
 *.db.wal

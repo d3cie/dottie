@@ -1,17 +1,36 @@
 {
-  "name": "dottie-web",
+  "name": "@dottie/web",
   "private": true,
+  "type": "module",
   "packageManager": "pnpm@10.26.0",
   "scripts": {
-    "build": "turbo run build",
-    "check": "turbo run check",
-    "dev": "turbo run dev",
+    "build": "svelte-kit sync && vite build",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "dev": "vite dev --host --port 5173",
+    "generate": "orval --config ./orval.config.ts",
     "format": "prettier --write .",
     "lint": "prettier --check ."
   },
+  "dependencies": {
+    "@fontsource-variable/lora": "^5.2.8",
+    "@fontsource-variable/nunito-sans": "^5.2.7",
+    "clsx": "^2.1.1",
+    "layerchart": "2.0.0-next.43",
+    "lucide-svelte": "^1.0.1",
+    "tailwind-merge": "^3.4.0"
+  },
   "devDependencies": {
+    "@sveltejs/adapter-static": "^3.0.9",
+    "@sveltejs/kit": "^2.49.0",
+    "@sveltejs/vite-plugin-svelte": "^6.2.1",
+    "@tailwindcss/vite": "^4.1.18",
+    "orval": "^8.4.1",
     "prettier": "^3.7.4",
     "prettier-plugin-svelte": "^3.4.0",
-    "turbo": "^2.7.2"
+    "svelte": "^5.46.0",
+    "svelte-check": "^4.3.0",
+    "tailwindcss": "^4.1.18",
+    "typescript": "^5.9.3",
+    "vite": "^7.2.4"
   }
 }

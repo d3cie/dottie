@@ -2,7 +2,7 @@
 
 Read this file before making changes in this repository. Treat these instructions as required defaults unless the task says otherwise.
 
-Dottie is an open-source, self-hosted web analytics product. It ships as one Go executable that serves the Huma API, the Svelte dashboard, and the browser tracking script. The repository uses Go, chi, Huma, sqlc, SQLite, DuckDB, Svelte 5, SvelteKit, Tailwind CSS v4, shadcn-svelte conventions, Orval, pnpm, and Turborepo.
+Dottie is an open-source, self-hosted web analytics product. It ships as one Go executable that serves the Huma API, the Svelte dashboard, and the browser tracking script. The repository uses Go, chi, Huma, sqlc, SQLite, DuckDB, Svelte 5, SvelteKit, Tailwind CSS v4, shadcn-svelte conventions, Orval, and pnpm.
 
 ## Repository structure
 
@@ -14,10 +14,8 @@ Dottie is an open-source, self-hosted web analytics product. It ships as one Go 
 - `internal/infra/duckdb` owns analytical event storage and queries.
 - `internal/config`, `internal/auth`, `internal/backup`, and `internal/doctor` own their named concerns.
 - `internal/web` embeds generated frontend assets. Do not edit generated assets by hand.
-- `web/apps/app` is the Svelte dashboard.
-- `web/apps/client` is the small browser tracker served as `/tracker.js`.
-- `web/packages/ui` owns reusable UI primitives.
-- `web/packages/api-client` contains Orval-generated API functions and schemas.
+- `web` is one self-contained Svelte dashboard application. Its UI primitives and generated Orval client live under `web/src/lib`.
+- `tracker` is the independent browser tracker package served as `/tracker.js`.
 - `migrations/sqlite` and `migrations/duckdb` own ordered database migrations.
 
 ## Working conventions
@@ -30,7 +28,7 @@ Dottie is an open-source, self-hosted web analytics product. It ships as one Go 
 - Use structured `log/slog` logging. Do not log secrets, passwords, session tokens, raw IP addresses, or request bodies.
 - Use `pnpm`; do not introduce npm or Yarn lockfiles.
 - Use Svelte 5 patterns and TypeScript inference. Prefer arrow functions for frontend handlers and helpers.
-- Use components from `@dottie/ui` before creating app-local primitives.
+- Use components from `web/src/lib/ui` before creating new primitives.
 - Preserve Peasy's compact visual language: lowercase navigation and page titles, restrained cards, clear density, and deliberate spacing. User-facing explanations and errors use normal sentence case.
 - Keep chart components declarative and small. Data shaping belongs in API responses or focused helpers, not in chart lifecycle code.
 - Make filters bookmarkable through URL search parameters.

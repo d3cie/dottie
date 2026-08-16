@@ -3,8 +3,8 @@ set -euo pipefail
 
 repository_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 embedded_dir="$repository_dir/internal/web/dist"
-app_dir="$repository_dir/web/apps/app/build"
-tracker_file="$repository_dir/web/apps/client/dist/tracker.js"
+app_dir="$repository_dir/web/build"
+tracker_file="$repository_dir/tracker/dist/tracker.js"
 
 mkdir -p "$embedded_dir"
 

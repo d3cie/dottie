@@ -2,12 +2,10 @@
 .env
 .env.*
 !.env.example
-.turbo/
 node_modules/
-web/**/node_modules/
-web/apps/app/.svelte-kit/
-web/apps/app/build/
-web/apps/client/dist/
+web/.svelte-kit/
+web/build/
+tracker/dist/
 internal/web/dist/*
 !internal/web/dist/.gitkeep
 /dist/

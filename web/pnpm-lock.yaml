@@ -7,16 +7,62 @@ settings:
 importers:
 
   .:
+    dependencies:
+      '@fontsource-variable/lora':
+        specifier: ^5.2.8
+        version: 5.3.0
+      '@fontsource-variable/nunito-sans':
+        specifier: ^5.2.7
+        version: 5.3.0
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
+      layerchart:
+        specifier: 2.0.0-next.43
+        version: 2.0.0-next.43(svelte@5.56.9)
+      lucide-svelte:
+        specifier: ^1.0.1
+        version: 1.0.1(svelte@5.56.9)
+      tailwind-merge:
+        specifier: ^3.4.0
+        version: 3.6.0
     devDependencies:
+      '@sveltejs/adapter-static':
+        specifier: ^3.0.9
+        version: 3.0.10(@sveltejs/kit@2.70.2(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.56.9)(vite@7.3.6(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.9.0)))(svelte@5.56.9)(typescript@5.9.3)(vite@7.3.6(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.9.0)))
+      '@sveltejs/kit':
+        specifier: ^2.49.0
+        version: 2.70.2(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.56.9)(vite@7.3.6(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.9.0)))(svelte@5.56.9)(typescript@5.9.3)(vite@7.3.6(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.9.0))
+      '@sveltejs/vite-plugin-svelte':
+        specifier: ^6.2.1
+        version: 6.2.4(svelte@5.56.9)(vite@7.3.6(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.9.0))
+      '@tailwindcss/vite':
+        specifier: ^4.1.18
+        version: 4.3.3(vite@7.3.6(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.9.0))
+      orval:
+        specifier: ^8.4.1
+        version: 8.24.0(prettier@3.9.6)(typescript@5.9.3)
       prettier:
         specifier: ^3.7.4
         version: 3.9.6
       prettier-plugin-svelte:
         specifier: ^3.4.0
         version: 3.5.2(prettier@3.9.6)(svelte@5.56.9)
-      turbo:
-        specifier: ^2.7.2
-        version: 2.10.10
+      svelte:
+        specifier: ^5.46.0
+        version: 5.56.9
+      svelte-check:
+        specifier: ^4.3.0
+        version: 4.7.6(picomatch@4.0.5)(svelte@5.56.9)(typescript@5.9.3)
+      tailwindcss:
+        specifier: ^4.1.18
+        version: 4.3.3
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+      vite:
+        specifier: ^7.2.4
+        version: 7.3.6(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.9.0)
 
   apps/app:
     dependencies:
@@ -684,36 +730,6 @@ packages:
     peerDependencies:
       vite: ^5.2.0 || ^6 || ^7 || ^8
 
-  '@turbo/darwin-64@2.10.10':
-    resolution: {integrity: sha512-gFDD+wRP5hWxBRghGyEbjpbLOY7aIU/wvsnKdMM7odQcp/wHMrnI83p0FyxxMRZnFH9ZD+S59MvcpOC5b+nrCA==}
-    cpu: [x64]
-    os: [darwin]
-
-  '@turbo/darwin-arm64@2.10.10':
-    resolution: {integrity: sha512-VZYsxZ6yjyDosUqtiroAVSXPLmx/qBxdHJgIxdMH9RyNmLdOLOWtJnYMnI4qckwCgQMK85G3fu94/xk5+iBCgw==}
-    cpu: [arm64]
-    os: [darwin]
-
-  '@turbo/linux-64@2.10.10':
-    resolution: {integrity: sha512-lAvW+yEnmsCKMEIwNugjozawvYytHKPhU0kfLBizu83MIs8OUb9KobYvkZ56L5akSM6K7+gBFLEIfQkaceh90g==}
-    cpu: [x64]
-    os: [android, linux]
-
-  '@turbo/linux-arm64@2.10.10':
-    resolution: {integrity: sha512-MSJ+NkRTd79Z9+YEZpUV9VOWVOOigFhE+v/ETNYJEuTJp3r00y9YgFvDXrmM+DP8Kal6tk3U6xSugD2/Ojh+Jg==}
-    cpu: [arm64]
-    os: [android, linux]
-
-  '@turbo/windows-64@2.10.10':
-    resolution: {integrity: sha512-ycWpXDkUfnDFDY9d+4Qna/UZotDB0wj+s9agrlmNt0Q7a3XHORhK8GPKJdzgzeutXu9EW5P/jyabTEHlohuDXw==}
-    cpu: [x64]
-    os: [win32]
-
-  '@turbo/windows-arm64@2.10.10':
-    resolution: {integrity: sha512-PMk6zQN0csUFklLe+1hz/5G9uU1YmV0cEIey2R/bSeA6o69qcBTlN4A3jOqkgenOO5dOpMHmq2sEUZo8r1+Ssg==}
-    cpu: [arm64]
-    os: [win32]
-
   '@types/cookie@0.6.0':
     resolution: {integrity: sha512-4Kh9a6B2bQciAhf7FSuMRRkUWecJgJu9nPnx3yzpsfXX/c50REIqpHY4C82bXP90qrLtXtkDxTZosYO3UpOwlA==}
 
@@ -1376,10 +1392,6 @@ packages:
     resolution: {integrity: sha512-sf4i37nQ2LBx4m3wB74y+ubopq6W/dIzXg0FDGjsYnZHVa1Da8FH853wlL2gtUhg+xJXjfk3kUZS3BRoQeoQBQ==}
     engines: {node: '>=6'}
 
-  turbo@2.10.10:
-    resolution: {integrity: sha512-/90KTW+USzvYOPmafRZHVKLBsHXQ5810Ao/HdtJYAqguIhZ+XruS6eIUjqJUDtrSxaZYynNFht68qckGKAOWTA==}
-    hasBin: true
-
   typedoc-plugin-coverage@4.0.3:
     resolution: {integrity: sha512-baim3wyMkqpX7rBzL/6iZ7wzKJuSr9ffP16RHOsdTUNoHUZeXLIZHSUBtUhXmNHaUNRgfqdmKLBwyggbJjGdeQ==}
     engines: {node: '>= 18'}
@@ -2012,24 +2024,6 @@ snapshots:
       '@tailwindcss/oxide': 4.3.3
       tailwindcss: 4.3.3
       vite: 7.3.6(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.9.0)
-
-  '@turbo/darwin-64@2.10.10':
-    optional: true
-
-  '@turbo/darwin-arm64@2.10.10':
-    optional: true
-
-  '@turbo/linux-64@2.10.10':
-    optional: true
-
-  '@turbo/linux-arm64@2.10.10':
-    optional: true
-
-  '@turbo/windows-64@2.10.10':
-    optional: true
-
-  '@turbo/windows-arm64@2.10.10':
-    optional: true
 
   '@types/cookie@0.6.0': {}
 
@@ -2690,15 +2684,6 @@ snapshots:
       picomatch: 4.0.5
 
   totalist@3.0.1: {}
-
-  turbo@2.10.10:
-    optionalDependencies:
-      '@turbo/darwin-64': 2.10.10
-      '@turbo/darwin-arm64': 2.10.10
-      '@turbo/linux-64': 2.10.10
-      '@turbo/linux-arm64': 2.10.10
-      '@turbo/windows-64': 2.10.10
-      '@turbo/windows-arm64': 2.10.10
 
   typedoc-plugin-coverage@4.0.3(typedoc@0.28.20(typescript@5.9.3)):
     dependencies:

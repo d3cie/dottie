@@ -10,7 +10,7 @@ browser dashboard -> Huma API -> services -> SQLite + DuckDB
 
 SQLite contains transactional state such as the administrator, sessions, and websites. sqlc generates its query layer. DuckDB contains immutable event facts and serves analytical queries. Administrative API routes require a secure session cookie; collection uses a public website ID and validates the request origin when the website has an origin configured.
 
-The Svelte app and tracker are built before Go release builds and embedded into the executable. `/tracker.js` derives its collection endpoint from its own script URL, so it can be installed on any website while posting back to the Dottie host.
+The standalone SvelteKit application lives in `web`; its UI primitives and Orval-generated client are ordinary app-local modules. The independent browser script lives in `tracker`. Both are built before Go release builds and embedded into the executable. `/tracker.js` derives its collection endpoint from its own script URL, so it can be installed on any website while posting back to the Dottie host.
 
 ## Runtime files
 
@@ -23,4 +23,3 @@ analytics.duckdb
 ```
 
 The process is intended to run in the foreground behind a service manager and reverse proxy. It binds to `127.0.0.1:8080` by default.
-

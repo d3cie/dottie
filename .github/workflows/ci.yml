@@ -29,9 +29,13 @@ jobs:
         with:
           node-version: 24
           cache: pnpm
-          cache-dependency-path: web/pnpm-lock.yaml
+          cache-dependency-path: |
+            web/pnpm-lock.yaml
+            tracker/pnpm-lock.yaml
       - name: Install frontend dependencies
-        run: pnpm --dir web install --frozen-lockfile
+        run: |
+          pnpm --dir web install --frozen-lockfile
+          pnpm --dir tracker install --frozen-lockfile
       - name: Install sqlc
         run: go install github.com/sqlc-dev/sqlc/cmd/sqlc@v1.29.0
       - name: Generate API and database clients
@@ -43,7 +47,9 @@ jobs:
       - name: Vet Go packages
         run: go vet ./...
       - name: Check frontend
-        run: pnpm --dir web check
+        run: |
+          pnpm --dir web check
+          pnpm --dir tracker check
       - name: Check formatting
         run: pnpm --dir web lint
       - name: Build embedded assets and executable

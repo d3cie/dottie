@@ -54,12 +54,17 @@ jobs:
         with:
           node-version: 24
           cache: pnpm
-          cache-dependency-path: web/pnpm-lock.yaml
-      - run: pnpm --dir web install --frozen-lockfile
+          cache-dependency-path: |
+            web/pnpm-lock.yaml
+            tracker/pnpm-lock.yaml
+      - run: |
+          pnpm --dir web install --frozen-lockfile
+          pnpm --dir tracker install --frozen-lockfile
       - name: Build frontend
         shell: bash
         run: |
           pnpm --dir web build
+          pnpm --dir tracker build
           bash scripts/embed-web.sh
       - name: Build executable
         shell: bash

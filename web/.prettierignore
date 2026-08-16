@@ -1,7 +1,5 @@
-apps/app/build
-apps/app/.svelte-kit
-apps/client/dist
-.turbo
-packages/api-client/src/generated
+build
+.svelte-kit
+src/lib/api-client/generated
 openapi.yaml
 pnpm-lock.yaml
