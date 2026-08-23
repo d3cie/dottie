@@ -5,7 +5,7 @@ go 1.25.0
 require (
 	github.com/danielgtaylor/huma/v2 v2.39.1
 	github.com/duckdb/duckdb-go/v2 v2.10505.0
-	github.com/go-chi/chi/v5 v5.3.1
+	github.com/go-chi/chi/v5 v5.3.2
 	github.com/google/uuid v1.6.0
 	github.com/mileusna/useragent v1.3.5
 	github.com/spf13/cobra v1.10.2
