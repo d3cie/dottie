@@ -1,6 +1,6 @@
 module github.com/d3cie/dottie
 
-go 1.25.0
+go 1.26.0
 
 require (
 	github.com/danielgtaylor/huma/v2 v2.39.1
@@ -9,7 +9,7 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/mileusna/useragent v1.3.5
 	github.com/spf13/cobra v1.10.2
-	golang.org/x/crypto v0.55.0
+	golang.org/x/crypto v0.56.0
 	golang.org/x/term v0.45.0
 	modernc.org/sqlite v1.56.0
 )
