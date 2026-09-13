@@ -1,6 +1,6 @@
 module github.com/d3cie/dottie
 
-go 1.25.0
+go 1.26.0
 
 require (
 	github.com/danielgtaylor/huma/v2 v2.39.1
@@ -10,7 +10,7 @@ require (
 	github.com/mileusna/useragent v1.3.5
 	github.com/spf13/cobra v1.10.2
 	golang.org/x/crypto v0.55.0
-	golang.org/x/term v0.45.0
+	golang.org/x/term v0.46.0
 	modernc.org/sqlite v1.56.0
 )
 
@@ -38,7 +38,7 @@ require (
 	golang.org/x/exp v0.0.0-20260112195511-716be5621a96 // indirect
 	golang.org/x/mod v0.37.0 // indirect
 	golang.org/x/sync v0.21.0 // indirect
-	golang.org/x/sys v0.47.0 // indirect
+	golang.org/x/sys v0.48.0 // indirect
 	golang.org/x/telemetry v0.0.0-20260625142307-59b4966ccb57 // indirect
 	golang.org/x/tools v0.47.0 // indirect
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da // indirect
